@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
-#include <unistd.h>
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 #include "types.h"
 #include "utils.h"
 

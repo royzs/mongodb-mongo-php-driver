@@ -1254,12 +1254,13 @@ PHP_METHOD(MongoCollection, aggregate)
 {
 	zval ***argv, *pipelines, *data, *retval, **values, *tmp;
 	int argc, i;
+	mongo_collection *c;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "+", &argv, &argc) == FAILURE) {
 		return;
 	}
 
-	mongo_collection *c = (mongo_collection*)zend_object_store_get_object(getThis() TSRMLS_CC);
+	c = (mongo_collection*)zend_object_store_get_object(getThis() TSRMLS_CC);
 	MONGO_CHECK_INITIALIZED(c->ns, MongoCollection);
 
 	for (i = 0; i < argc; i++) {

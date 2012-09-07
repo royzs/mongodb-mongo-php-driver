@@ -1,11 +1,20 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <unistd.h>
+#if WIN32
+# include <winsock2.h>
+#else
+# include <sys/socket.h>
+#endif
+#ifdef HAVE_SYS_TIME_H
+# include <sys/time.h>
+#endif
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 #include <stdlib.h>
 #include <stdio.h>
+#include "types.h"
 
 /*
  * Low-level send function.

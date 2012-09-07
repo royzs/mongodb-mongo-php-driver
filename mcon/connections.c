@@ -9,25 +9,26 @@
 #include "bson_helpers.h"
 #include "mini_bson.h"
 
-#ifdef WIN32
-#include <winsock2.h>
-#  ifndef int64_t
-     typedef __int64 int64_t;
-#  endif
+#if WIN32
+# include <winsock2.h>
+# define socklen_t int
 #else
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <fcntl.h>
-#include <netdb.h>
-#include <sys/un.h>
+# include <netinet/in.h>
+# include <netinet/tcp.h>
+# include <fcntl.h>
+# include <netdb.h>
+# include <sys/un.h>
 #endif
-
-#include <unistd.h>
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <sys/time.h>
+#ifdef HAVE_SYS_TIME_H
+# include <sys/time.h>
+#endif
 
 #define INT_32  4
 #define FLAGS   0
@@ -85,8 +86,6 @@ int mongo_connection_connect(char *host, int port, int timeout, char **error_mes
 	int                status;
 	int                tmp_socket;
 
-	*error_message = NULL;
-
 #ifdef WIN32
 	WORD       version;
 	WSADATA    wsaData;
@@ -98,6 +97,8 @@ int mongo_connection_connect(char *host, int port, int timeout, char **error_mes
 	uint               size;
 	int                yes = 1;
 #endif
+
+	*error_message = NULL;
 
 #ifdef WIN32
 	family = AF_INET;

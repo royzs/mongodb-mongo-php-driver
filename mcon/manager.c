@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <sys/time.h>
+#ifdef HAVE_SYS_TIME_H
+# include <sys/time.h>
+#endif
 
 #include "types.h"
 #include "utils.h"
@@ -322,7 +324,7 @@ static mongo_con_manager_item *create_new_manager_item(void)
 	return tmp;
 }
 
-static inline void free_manager_item(mongo_con_manager *manager, mongo_con_manager_item *item)
+static void free_manager_item(mongo_con_manager *manager, mongo_con_manager_item *item)
 {
 	mongo_manager_log(manager, MLOG_CON, MLOG_INFO, "freeing connection %s", item->hash);
 	free(item->hash);

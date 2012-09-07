@@ -1,6 +1,10 @@
 #include "str.h"
 #include <sys/types.h>
 
+#ifndef int64_t
+typedef __int64 int64_t;
+#endif
+
 #if PHP_C_BIGENDIAN
 // reverse the bytes in an int
 // wheeee stupid byte tricks
